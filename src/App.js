@@ -5,17 +5,37 @@ import Papa from 'papaparse';
 
 function App() {
   const [parsedCsvData, setParsedCsvData] = useState([]);
+  const [total, setTotal] = useState(0);
+
+  // function analyzeData(){
+  //   let total = 0;
+  //   let investmentTotal = 0;
+  //   let incomeTotal = 0;
+  //   let restarauntTotal = 0;
+  //   let groceriesTotal = 0;
+  //   let gasTotal = 0;
+  //   let counts = {};
+
+  //   for(let transaction of parsedCsvData){
+  //     let amt = 
+  //   }
+  // }
 
   const parseFile = file => {
     Papa.parse(file, {
       header: true,
       complete: results => {
         setParsedCsvData(results.data);
+        setTotal(results.data.reduce((acc, curr) => 
+        {
+          console.log(curr['Amount']);
+          return acc + parseFloat(curr['Amount']);
+        }, 0
+        ));
+        // analyzeData();
       },
     });
   };
-
-  console.log(parsedCsvData);
 
   const onDrop = useCallback(acceptedFiles => {
     if (acceptedFiles.length) {
@@ -51,9 +71,11 @@ function App() {
         )}
       </div>
 
+      <h1>{total}</h1>
+
           {parsedCsvData &&
             parsedCsvData.map((parsedData, index) => (
-              <div key={index}>{parsedData['Description']}</div>
+              <div key={index}>{parsedData['Amount']}</div>
             ))}
 
 
